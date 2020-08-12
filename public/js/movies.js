@@ -11,7 +11,7 @@ var app = new Vue({
             upvote({id}).then( //shorthand for {id: id}
                 console.log(`>>> ${id} upvoted`)
             ).catch((error)=>{
-                console.log(error.message);
+                showNotification(error.message);
             });
         }
     },
@@ -26,3 +26,15 @@ var app = new Vue({
       });
     }
   });
+
+  // notification
+const notification = document.querySelector('.notification');
+
+const showNotification = (message) => {
+  notification.textContent = message;
+  notification.classList.add('active');
+  setTimeout(() => {
+    notification.classList.remove('active');
+    notification.textContent = '';
+  }, 4000);
+};
