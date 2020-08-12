@@ -61,7 +61,7 @@
         <span class="text">{{ movie.text }}</span>
         <div>
           <span class="votes">{{ movie.upvotes }}</span>
-          <i class="material-icons upvote">arrow_upward</i>
+          <i class="material-icons upvote" v-on:click="upvoteMovie(movie.id)">arrow_upward</i>
         </div>
       </li>
     </ul>

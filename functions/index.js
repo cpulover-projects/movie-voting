@@ -42,19 +42,57 @@ exports.addMovie = functions.https.onCall((data, context) => {
     if (!context.auth) {
       throw new functions.https.HttpsError(
         'unauthenticated', 
-        'only authenticated users can add requests'
+        'Only authenticated users can add requests'
       );
     }
     if (data.text.length > 30) {
       throw new functions.https.HttpsError(
         'invalid-argument', 
-        'request must be no more than 30 characters long'
+        'Request must be no more than 30 characters long'
       );
     }
-    return admin.firestore().collection('requests').add({
+    return admin.firestore().collection('movies').add({
       text: data.text,
       upvotes: 0
     }).then((data)=>{
         return console.log("Movie added: "+data);
     });
   });
+
+  //http callable function: upvote
+  exports.upvote = functions.https.onCall((data, context)=>{
+    if (!context.auth) {
+      throw new functions.https.HttpsError(
+        'unauthenticated', 
+        'Only authenticated users can add requests'
+      );
+    }
+
+    //get refs for user doc and movie doc
+    const user = admin.firestore().collection('users').doc(context.auth.uid);
+    const movie = admin.firestore().collection('movies').doc(data.id);
+
+    return user.get().then(doc => {
+      // check thew user hasn't already upvoted
+      if(doc.data().upvotedOn.includes(data.id)){
+        throw new functions.https.HttpsError(
+          'failed-precondition', 
+          'You can only vote something up once'
+        );
+      }
+  
+      // update the array in user document
+      return user.update({
+        upvotedOn: [...doc.data().upvotedOn, data.id]
+      })
+      .then(() => {
+        // update the votes on the request
+        return movie.update({
+          upvotes: admin.firestore.FieldValue.increment(1)
+        });
+      });
+  
+
+      
+    })
+  })
