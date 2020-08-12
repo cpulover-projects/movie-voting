@@ -1,5 +1,7 @@
 const requestModal = document.querySelector('.new-request');
 const requestLink = document.querySelector('.add-movie');
+const requestForm = document.querySelector('.new-request form');
+
 
 
 // open request modal
@@ -27,3 +29,22 @@ const firebaseFunctionRef = firebase.functions();
 //         console.log(result.data);
 //     });
 // })
+
+// add a new request
+requestForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+   //get callable function reference from the Firebase Function
+  const addMovie = firebaseFunctionRef.httpsCallable('addMovie');
+  addMovie({ 
+    text: requestForm.request.value 
+  })
+  .then(() => {
+    requestForm.reset();
+    requestForm.querySelector('.error').textContent = '';
+    requestModal.classList.remove('open');
+  })
+  .catch(error => {
+    requestForm.querySelector('.error').textContent = error.message;
+  });
+});

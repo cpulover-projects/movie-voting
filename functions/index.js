@@ -36,3 +36,25 @@ exports.newUserSignUp = functions.auth.user().onCreate(user => {
     const doc = admin.firestore().collection('users').doc(user.uid);
     return doc.delete();
   });
+
+  // http callable function (adding a movie)
+exports.addMovie = functions.https.onCall((data, context) => {
+    if (!context.auth) {
+      throw new functions.https.HttpsError(
+        'unauthenticated', 
+        'only authenticated users can add requests'
+      );
+    }
+    if (data.text.length > 30) {
+      throw new functions.https.HttpsError(
+        'invalid-argument', 
+        'request must be no more than 30 characters long'
+      );
+    }
+    return admin.firestore().collection('requests').add({
+      text: data.text,
+      upvotes: 0
+    }).then((data)=>{
+        return console.log("Movie added: "+data);
+    });
+  });
