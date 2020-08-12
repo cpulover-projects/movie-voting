@@ -10,29 +10,53 @@
 </head>
 
 <body>
-<!-- add movie modal -->
-<div class="new-request">
-  <div class="modal">
-    <h2>Add a movie</h2>
-    <form>
-      <input type="text" name="request" placeholder="Enter movie name">
-      <button>Submit</button>
-      <p class="error"></p>
-    </form>
+  <!-- auth modals -->
+  <div class="auth open">
+    <div class="modal active">
+      <h2>Login</h2>
+      <form class="login">
+        <input type="text" name="email" placeholder="Email">
+        <input type="password" name="password" placeholder="Password">
+        <button>Login</button>
+        <p class="error"></p>
+      </form>
+      <div>No account? <a class="switch">Register instead</a></div>
+    </div>
+    <div class="modal">
+      <h2>Register</h2>
+      <form class="register">
+        <input type="text" name="email" placeholder="Email">
+        <input type="password" name="password" placeholder="Password">
+        <button>Register</button>
+        <p class="error"></p>
+      </form>
+      <div>Got an account? <a class="switch">Login instead</a></div>
+    </div>
   </div>
-</div>
+
+  <!-- add movie modal -->
+  <div class="new-request">
+    <div class="modal">
+      <h2>Add a movie</h2>
+      <form>
+        <input type="text" name="request" placeholder="Enter movie name">
+        <button>Submit</button>
+        <p class="error"></p>
+      </form>
+    </div>
+  </div>
 
 
   <header>
     <nav>
-      <a  class="add-movie">Add movie</a>
-      <a  class="sign-out">Sign out</a>
+      <a class="add-movie">Add movie</a>
+      <a class="sign-out">Sign out</a>
     </nav>
   </header>
 
   <section class="content">
     <h1>Vote for your favorite movies</h1>
-    <ul class="request-list"> 
+    <ul class="request-list">
       <li>
         <span class="text">The Avengers</span>
         <div>
@@ -42,6 +66,8 @@
       </li>
     </ul>
   </section>
+
+  <button id="say-hello">Say hello</button>
 
   <!-- The core Firebase JS SDK is always required and must be listed first -->
   <script src="/__/firebase/7.17.2/firebase-app.js"></script>
@@ -55,6 +81,7 @@
   <script src="/__/firebase/init.js"></script>
 
   <script src="js/app.js"></script>
+  <script src="js/auth.js"></script>
 </body>
 
 </html>

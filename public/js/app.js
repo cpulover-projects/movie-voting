@@ -12,3 +12,17 @@ requestModal.addEventListener('click', (e) => {
     requestModal.classList.remove('open');
   }
 });
+
+//get Firebase Function reference (to use callable functions)
+const firebaseFunctionRef = firebase.functions();
+
+const helloButton = document.querySelector('#say-hello')
+helloButton.addEventListener('click', ()=>{
+    //get callable function reference from the Firebase Function
+    const sayHello = firebaseFunctionRef.httpsCallable('sayHello');
+
+    //callable function is asyn so we can you then() to handle the result
+    sayHello({name: "Hieu"}).then(result => {
+        console.log(result.data);
+    });
+})
